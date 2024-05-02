@@ -10,10 +10,6 @@ function ClockViewDOM() {
   let mArrow = null;
   let hArrow = null;
 
-  const CLOCK_RADIUS = 75;
-  const CLOCK_HOUR_MARK_RADIUS = 75;
-  const CLOCK_HOUR_MARK_OFFSET_X = -2;
-
   this.start = function (model, field, city, gtm) {
     myModel = model;
     myField = field;
@@ -30,10 +26,10 @@ function ClockViewDOM() {
   };
 
   this.clockCreate = function (city, gtm) {
-    this.createButtons();
+    this.createButtons(); // верстка
     this.setCityTime(city, gtm);
-    this.createClockField();
-    this.makingClock();
+    this.createClockField(); // верстка
+    this.makingClock(); // верстка
   };
 
   this.createButtons = function () {
@@ -55,25 +51,29 @@ function ClockViewDOM() {
     clock.className = 'clock';
     myField.appendChild(clock);
 
-    sArrow = document.createElement('div');
+    let sArrow = document.createElement('div');
     sArrow.className = 'sArrow';
     clock.appendChild(sArrow);
 
-    mArrow = document.createElement('div');
+    let mArrow = document.createElement('div');
     mArrow.className = 'mArrow';
     clock.appendChild(mArrow);
 
-    hArrow = document.createElement('div');
+    let hArrow = document.createElement('div');
     hArrow.className = 'hArrow';
     clock.appendChild(hArrow);
+
+    // let centerCircle = document.createElement('div');
+    // centerCircle.className = 'centerCircle';
+    // clock.appendChild(centerCircle);
   };
 
   this.makingClock = function () {
-    const delta = (Math.PI * 2) / 12;
+    let delta = (Math.PI * 2) / 12; // сдвиг угла
     let angle = 0;
     let h = 3;
-    const clockCenterX = clock.offsetWidth / 2;
-    const clockCenterY = clock.offsetHeight / 2;
+    let clockCenterX = clock.offsetWidth / 2;
+    let clockCenterY = clock.offsetHeight / 2;
 
     for (let i = 0; i < 12; i++) {
       let point = document.createElement('div');
@@ -81,13 +81,11 @@ function ClockViewDOM() {
       point.innerHTML = h;
       clock.appendChild(point);
 
-      const pointCenterX = point.offsetWidth / 2;
-      const pointCenterY = point.offsetHeight / 2;
+      let pointCenterX = point.offsetWidth / 2;
+      let pointCenterY = point.offsetHeight / 2;
 
-      point.style.left =
-        clockCenterX - pointCenterX + CLOCK_HOUR_MARK_OFFSET_X + CLOCK_HOUR_MARK_RADIUS * Math.cos(angle) + 'px';
-      point.style.top =
-        clockCenterY - pointCenterY + CLOCK_HOUR_MARK_OFFSET_X + CLOCK_HOUR_MARK_RADIUS * Math.sin(angle) + 'px';
+      point.style.left = clockCenterX - pointCenterX - 2 + 75 * Math.cos(angle) + 'px';
+      point.style.top = clockCenterY - pointCenterY - 2 + 75 * Math.sin(angle) + 'px';
 
       angle += delta;
       h++;

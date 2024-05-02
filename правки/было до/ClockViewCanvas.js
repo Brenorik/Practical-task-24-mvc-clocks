@@ -14,21 +14,6 @@ function ClockViewCanvas() {
   let min = null;
   let sec = null;
 
-  const CLOCK_RADIUS = 100;
-  const CLOCK_CENTER_X = 100;
-  const CLOCK_CENTER_Y = 100;
-  const CLOCK_HOUR_MARK_RADIUS = 75;
-  const CLOCK_HOUR_MARK_FONT = '100 10px Arial';
-  const CLOCK_HOUR_MARK_COLOR = '#fff';
-  const CLOCK_HOUR_MARK_OFFSET_X = [-3, -6];
-  const SEC_ARROW_LENGTH = 80;
-  const MIN_ARROW_LENGTH = 75;
-  const HR_ARROW_LENGTH = 40;
-  const ARROW_WIDTH_SEC = 2;
-  const ARROW_WIDTH_MIN = 3;
-  const ARROW_WIDTH_HR = 4;
-  const ARROW_COLOR = '#383535';
-
   this.start = function (model, field, city, gtm) {
     myModel = model;
     myField = field;
@@ -83,7 +68,7 @@ function ClockViewCanvas() {
   this.createClockField = function () {
     ctx.beginPath();
     ctx.fillStyle = '#e6db04';
-    ctx.arc(CLOCK_CENTER_X, CLOCK_CENTER_Y, CLOCK_RADIUS, 0, Math.PI * 2, true);
+    ctx.arc(100, 100, 100, 0, Math.PI * 2, true);
     ctx.fill();
 
     ctx.beginPath();
@@ -92,8 +77,8 @@ function ClockViewCanvas() {
     let h = 3;
 
     for (let i = 0; i < 12; i++) {
-      x = CLOCK_CENTER_X + CLOCK_HOUR_MARK_RADIUS * Math.cos(angle);
-      y = CLOCK_CENTER_Y + CLOCK_HOUR_MARK_RADIUS * Math.sin(angle);
+      x = 100 + 75 * Math.cos(angle);
+      y = 100 + 75 * Math.sin(angle);
 
       ctx.beginPath();
       ctx.fillStyle = '#2fa50f';
@@ -101,9 +86,15 @@ function ClockViewCanvas() {
       ctx.fill();
 
       ctx.beginPath();
-      ctx.fillStyle = CLOCK_HOUR_MARK_COLOR;
-      ctx.font = CLOCK_HOUR_MARK_FONT;
-      ctx.fillText(h, x + CLOCK_HOUR_MARK_OFFSET_X[h >= 10 ? 1 : 0], y + 3);
+      ctx.fillStyle = '#fff';
+      ctx.font = '100 10px Arial';
+      if (h < 10) {
+        ctx.fillText(h, x - 3, y + 3);
+      }
+
+      if (h >= 10) {
+        ctx.fillText(h, x - 6, y + 3);
+      }
 
       angle += delta;
       h++;
@@ -112,30 +103,53 @@ function ClockViewCanvas() {
   };
 
   this.createArrows = function () {
-    let x1 = CLOCK_CENTER_X;
-    let y1 = CLOCK_CENTER_Y;
+    let x1 = canvas.width / 2;
+    let y1 = canvas.height / 2;
 
     let secAngle = 6 * sec;
     let minAngle = 6 * (min + (1 / 60) * sec);
     let hrAngle = 30 * (hours + (1 / 60) * min);
 
-    this.drawArrow(x1, y1, secAngle, SEC_ARROW_LENGTH, ARROW_WIDTH_SEC);
-    this.drawArrow(x1, y1, minAngle, MIN_ARROW_LENGTH, ARROW_WIDTH_MIN);
-    this.drawArrow(x1, y1, hrAngle, HR_ARROW_LENGTH, ARROW_WIDTH_HR);
-  };
-
-  this.drawArrow = function (x, y, angle, length, width) {
     ctx.beginPath();
-    ctx.lineWidth = width;
+    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
-    ctx.translate(x - ctx.lineWidth / 2, y);
-    ctx.rotate((angle * Math.PI) / 180 + Math.PI);
+    ctx.translate(x1 - ctx.lineWidth / 2, y1);
+    ctx.rotate((secAngle * Math.PI) / 180 + Math.PI);
     ctx.moveTo(0, -10);
-    ctx.lineTo(0, length);
-    ctx.strokeStyle = ARROW_COLOR;
+    ctx.lineTo(0, 80);
+    ctx.strokeStyle = '#383535';
     ctx.stroke();
     ctx.resetTransform();
     ctx.closePath();
+
+    ctx.beginPath();
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.translate(x1 - ctx.lineWidth / 2, y1);
+    ctx.rotate((minAngle * Math.PI) / 180 + Math.PI);
+    ctx.moveTo(0, -14);
+    ctx.lineTo(0, 75);
+    ctx.strokeStyle = '#383535';
+    ctx.stroke();
+    ctx.resetTransform();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.translate(x1 - ctx.lineWidth / 2, y1);
+    ctx.rotate((hrAngle * Math.PI) / 180 + Math.PI);
+    ctx.moveTo(0, -16);
+    ctx.lineTo(0, 40);
+    ctx.strokeStyle = '#383535';
+    ctx.stroke();
+    ctx.resetTransform();
+    ctx.closePath();
+
+    // ctx.beginPath();
+    // ctx.fillStyle = '#F84949';
+    // ctx.arc(x1, y1, 6, 0, Math.PI * 2, true);
+    // ctx.fill();
   };
 
   this.changeState = function (item, state) {

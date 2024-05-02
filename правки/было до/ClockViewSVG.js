@@ -10,11 +10,6 @@ function ClockViewSVG() {
   let mArrow = null;
   let hArrow = null;
 
-  const CLOCK_RADIUS = 100;
-  const CLOCK_CENTER_X = '50%';
-  const CLOCK_CENTER_Y = '50%';
-  const HOUR_MARK_RADIUS = 75;
-
   this.start = function (model, field, city, gtm) {
     myModel = model;
     myField = field;
@@ -52,22 +47,8 @@ function ClockViewSVG() {
   };
 
   this.createClockField = function () {
-    let svg = `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='100%' height='200' viewBox='0 0 200 200' preserveAspectRatio='xMidYMin meet'>
-              <g class='mainCircle'>
-                  <circle r='${CLOCK_RADIUS}' cx='${CLOCK_CENTER_X}' cy='${CLOCK_CENTER_Y}' class='clock'></circle>
-                  <g class='arrows'>
-                      <rect class='hArrow' x='${
-                        CLOCK_RADIUS - 1.5
-                      }' y='45%' width='3' height='64' rx='2.5' ry='2.55'></rect>
-                      <rect class='mArrow' x='${
-                        CLOCK_RADIUS - 0.9
-                      }' y='44%' width='1.8' height='80' rx='2' ry='2'></rect>
-                      <rect class='sArrow' x='${
-                        CLOCK_RADIUS - 0.5
-                      }' y='42%' width='1' height='100' rx='2' ry='2'></rect>
-                  </g>
-              </g>
-          </svg>`;
+    let svg =
+      "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='100%' height='200' viewBox='0 0 200 200' preserveAspectRatio='xMidYMin meet'><g class='mainCircle'><circle r='100' cx='50%' cy='50%' class='clock'></circle><g class='arrows'><rect class='hArrow' x='98.5' y='45%' width='3' height='64' rx='2.5' ry='2.55'></rect><rect class='mArrow' x='99.1' y='44%' width='1.8' height='80' rx='2' ry='2'></rect><rect class='sArrow' x='99.5' y='42%' width='1' height='100' rx='2' ry='2'></rect></g></g></svg>";
     let svg_wrapper = document.createElement('div');
     svg_wrapper.className = 'clock-margin';
     svg_wrapper.innerHTML = svg;
@@ -75,7 +56,7 @@ function ClockViewSVG() {
   };
 
   this.makingClock = function () {
-    const delta = (Math.PI * 2) / 12; // сдвиг угла
+    let delta = (Math.PI * 2) / 12; // сдвиг угла
     let angle = 0;
     let h = 3;
 
@@ -89,8 +70,8 @@ function ClockViewSVG() {
       point.classList.add('hPoint');
       let text = document.createElementNS(svgNS, 'text');
 
-      x = CLOCK_RADIUS + HOUR_MARK_RADIUS * Math.cos(angle);
-      y = CLOCK_RADIUS + HOUR_MARK_RADIUS * Math.sin(angle);
+      x = 100 + 75 * Math.cos(angle);
+      y = 100 + 75 * Math.sin(angle);
 
       if (h < 10) {
         text.setAttribute('x', x - 2.5);
